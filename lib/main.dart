@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             },),
             RaisedButton(child: Text(jsEvent2Title),onPressed: (){
-              bridge.callHandler("jsMethodWithCallback",completionHandler:(obj,error){
+              bridge.callHandler("jsMethodWithCallback",args: ["原生信息"],completionHandler:(obj,error){
                 this.setState(() {
                   jsEvent2Title = (error == null) ? "成功调用JS事件2" : error;
                 });

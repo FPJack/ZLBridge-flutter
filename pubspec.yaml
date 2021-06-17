@@ -26,7 +26,12 @@ dependencies:
   flutter:
     sdk: flutter
   zlbridge_flutter:
-    path: ../flutter_zlbridge/zlbridge_flutter
+    git:
+      url: https://github.com/FPJack/ZLBridge-flutter
+      path: zlbridge_flutter
+
+  #  zlbridge_flutter:
+#    path: ../flutter_zlbridge/zlbridge_flutter
 
 
   # The following adds the Cupertino Icons font to your application.

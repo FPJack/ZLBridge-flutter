@@ -1,16 +1,112 @@
-# flutter_zlbridge
 
-A new Flutter application.
+## demo
+下载包到本地，可选择android或者ios模拟器运行查看效果图
+## 说明
+ZLBridge-flutter是为原生(android,ios)webview与JS提供数据交互更简单方便的一个小插件工具，其数据交互的原理iOS是基于[userContentController addScriptMessageHandler:bridge name:@"ZLBridge"]实现的，android是基于webView.addJavascriptInterface接口实现的。ZLBridge-flutter并不提供webview页面展示，只负责处理原生与js数据交互，可配合webview_flutter，flutter_webview_plugin等等三方库使用。具体个端实现原理可查看对应平台的源码
+[ZLBridge-iOS](https://github.com/FPJack/ZLBridge-iOS)
+[ZLBridge-Android](https://github.com/FPJack/ZLBridge-Android)
+[ZLBridge-JS](https://github.com/FPJack/ZLBridge-JS)
 
-## Getting Started
+## 安装
+```ruby
+dependencies:
+  zlbridge_flutter:
+    git:
+      url: https://github.com/FPJack/ZLBridge-flutter
+      path: zlbridge_flutter
+```
+# 初始化 
 
-This project is a starting point for a Flutter application.
+## bridge
+```Dart
+ZLBridge bridge = ZLBridge(evaluateJavascriptFunc:(String js){
+	 //调用对应三方库执行原生js的API接口， 
+	 //flutter_webview_plugin:flutterWebViewPlugin.evalJavascript(js);
+	 //webview_flutter:webVC.evaluateJavascript(js);
+     return webVC.evaluateJavascript(js);
+    });
 
-A few resources to get you started if this is your first Flutter project:
+```
+## JavascriptChannel
+```Dart
+//用三方库天假ZLBridge的channelName，以及回调成功时调用bridge.handleJSMessage(message.message)
+JavascriptChannel(
+        name: ZLBridge.channelName,
+        onMessageReceived: (JavascriptMessage message) {
+          bridge.handleJSMessage(message.message);
+        });
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+# ZLBridge初始化(可选本地原生注入，也可以由H5远程注入)
+原生初始化ZLBridge
+```Dart
+    bridge.injectLocalJS();
+```
+或者H5初始化ZLBridge
+```JavaScript
+ var ZLBridge = require('zlbridge-js')
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# 原生与JS交互
+
+## JS调用原生test事件
+
+### 无参数
+```JavaScript
+window.ZLBridge.call('test',(arg) => {
+
+	});
+```
+### 有参数参数
+```JavaScript
+window.ZLBridge.call('test',{key:"value"},(arg) => {
+
+	});
+```
+### 原生注册test事件
+```Java
+bridge.registHandler("test", (obj, callback){
+      callback(obj,true);
+    });
+```
+
+## 原生调用js
+
+### 原生调用JS的jsMethod事件
+```Dart
+bridge.callHandler("jsMethodWithCallback",args: ["原生信息"],completionHandler:(obj,error){
+                
+	});
+```
+
+### js注册jsMethod事件
+```JavaScript
+window.ZLBridge.register("jsMethod",(arg) => {
+     return arg;
+});
+ ```
+ 或者
+ ```JavaScript
+window.ZLBridge.registerWithCallback("jsMethod",(arg,callback) => {
+  //ture代表原生只能监听一次回调结果，false可以连续监听，默认传为true
+  callback(arg,true);
+});
+  ```
+
+# 通过本地注入JS脚本的，H5可以监听ZLBridge初始化完成
+```JavaScript
+document.addEventListener('ZLBridgeInitReady', function() {
+    consloe.log('ZLBridge初始化完成');
+},false);
+  ```
+# ！！！！ flutter传给JS的值必须是可以json.encode转换的Object
+
+## Author
+
+范鹏, 2551412939@qq.com
+
+
+
+## License
+
+ZLBridge is available under the MIT license. See the LICENSE file for more info.
