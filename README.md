@@ -15,9 +15,9 @@ dependencies:
       url: https://github.com/FPJack/ZLBridge-flutter
       path: zlbridge_flutter
 ```
-# 初始化 
+## 初始化 
 
-## bridge
+### bridge
 ```Dart
 ZLBridge bridge = ZLBridge(evaluateJavascriptFunc:(String js){
 	 //调用对应三方库执行原生js的API接口， 
@@ -27,7 +27,7 @@ ZLBridge bridge = ZLBridge(evaluateJavascriptFunc:(String js){
 });
 
 ```
-## JavascriptChannel
+### JavascriptChannel
 ```Dart
 //用对应三方库的JavascriptChannel添加ZLBridge的channelName，以及回调成功时调用bridge.handleJSMessage(message),bridge的registHandler就能接受相对应注册的事件通知
 JavascriptChannel(
@@ -37,7 +37,7 @@ JavascriptChannel(
 });
 ```
 
-# ZLBridge初始化(可选本地原生注入，也可以由H5远程注入)
+## ZLBridge初始化(可选本地原生注入，也可以由H5远程注入)
 原生初始化ZLBridge
 ```Dart
     bridge.injectLocalJS();
@@ -48,23 +48,23 @@ JavascriptChannel(
  var zlbridge = require('zlbridge-js')
 ```
 
-# 原生与JS交互
+## 原生与JS交互
 
-## JS调用原生test事件
+### JS调用原生test事件
 
-### 无参数
+#### 无参数
 ```JavaScript
 window.ZLBridge.call('test',(arg) => {
 
 });
 ```
-### 有参数参数
+#### 有参数参数
 ```JavaScript
 window.ZLBridge.call('test',{key:"value"},(arg) => {
 
 });
 ```
-### 原生注册test事件
+#### 原生注册test事件
 ```Java
 bridge.registHandler("test", (obj, callback){
 	  //true：jS调用一次test事件只能接受原生一次传值，false：JS一次事件可接受多次传值
@@ -72,16 +72,16 @@ bridge.registHandler("test", (obj, callback){
 });
 ```
 
-## 原生调用js
+### 原生调用js
 
-### 原生调用JS的jsMethod事件
+#### 原生调用JS的jsMethod事件
 ```Dart
 bridge.callHandler("jsMethodWithCallback",args: ["原生信息"],completionHandler:(obj,error){
                 
 });
 ```
 
-### js注册jsMethod事件
+#### js注册jsMethod事件
 ```JavaScript
 window.ZLBridge.register("jsMethod",(arg) => {
      return arg;
@@ -95,13 +95,13 @@ window.ZLBridge.registerWithCallback("jsMethod",(arg,callback) => {
 });
   ```
 
-# 通过本地注入JS脚本的，H5可以监听ZLBridge初始化完成
+## 通过本地注入JS脚本的，H5可以监听ZLBridge初始化完成
 ```JavaScript
 document.addEventListener('ZLBridgeInitReady', function() {
     consloe.log('ZLBridge初始化完成');
 },false);
   ```
-# ！！！！ flutter传给JS的值必须是可以json.encode转换的Object
+## ！！！！ flutter传给JS的值必须是可以json.encode转换的Object
 
 ## Author
 
