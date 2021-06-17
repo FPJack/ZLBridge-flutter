@@ -29,7 +29,7 @@ ZLBridge bridge = ZLBridge(evaluateJavascriptFunc:(String js){
 ```
 ## JavascriptChannel
 ```Dart
-//用三方库天假ZLBridge的channelName，以及回调成功时调用bridge.handleJSMessage(message.message)
+//用对应三方库的JavascriptChannel添加ZLBridge的channelName，以及回调成功时调用bridge.handleJSMessage(message),bridge的registHandler就能接受相对应注册的事件通知
 JavascriptChannel(
         name: ZLBridge.channelName,
         onMessageReceived: (JavascriptMessage message) {
