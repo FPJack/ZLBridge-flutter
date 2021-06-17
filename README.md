@@ -76,7 +76,7 @@ bridge.registHandler("test", (obj, callback){
 
 #### 原生调用JS的jsMethod事件
 ```Dart
-bridge.callHandler("jsMethodWithCallback",args: ["原生信息"],completionHandler:(obj,error){
+bridge.callHandler("jsMethod",args: ["原生信息"],completionHandler:(obj,error){
                 
 });
 ```
@@ -111,4 +111,4 @@ document.addEventListener('ZLBridgeInitReady', function() {
 
 ## License
 
-ZLBridge is available under the MIT license. See the LICENSE file for more info.
+ZLBridge-flutter is available under the MIT license. See the LICENSE file for more info.
