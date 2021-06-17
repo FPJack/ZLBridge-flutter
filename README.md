@@ -37,12 +37,12 @@ JavascriptChannel(
 });
 ```
 
-## h5端zlbridge初始化(可选本地原生注入初始化，也可以由H5远程导入初始化)
-原生初始化ZLBridge
+## window.zlbridge初始化(可选本地原生注入初始化，也可以由H5远程导入初始化)
+原生
 ```Dart
   bridge.injectLocalJS();
 ```
-或者H5初始化ZLBridge
+或者H5
 ```JavaScript
 //初始化完成后也可通过window.zlbridge拿zlbridge对象,[ZLBridge-JS](https://github.com/FPJack/ZLBridge-JS).
  var zlbridge = require('zlbridge-js')
