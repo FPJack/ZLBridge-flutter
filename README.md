@@ -40,11 +40,12 @@ JavascriptChannel(
 ## window.zlbridge初始化(可选本地原生注入初始化，也可以由H5远程导入初始化)
 原生
 ```Dart
+  //！！！监听webview加载完成注入本地JS代码
   bridge.injectLocalJS();
 ```
 或者H5
 ```JavaScript
-//初始化完成后也可通过window.zlbridge拿zlbridge对象,[ZLBridge-JS](https://github.com/FPJack/ZLBridge-JS).
+//初始化完成后也可通过window.zlbridge拿zlbridge对象,详细请查看ZLBridge-JS
  var zlbridge = require('zlbridge-js')
 ```
 
