@@ -44,7 +44,7 @@ JavascriptChannel(
 ```
 或者H5初始化ZLBridge
 ```JavaScript
-//初始化完成后也可通过window.zlbridge拿zlbridge对象
+//初始化完成后也可通过window.zlbridge拿zlbridge对象,[ZLBridge-JS](https://github.com/FPJack/ZLBridge-JS).
  var zlbridge = require('zlbridge-js')
 ```
 
@@ -54,13 +54,13 @@ JavascriptChannel(
 
 #### 无参数
 ```JavaScript
-window.ZLBridge.call('test',(arg) => {
+window.zlbridge.call('test',(arg) => {
 
 });
 ```
 #### 有参数参数
 ```JavaScript
-window.ZLBridge.call('test',{key:"value"},(arg) => {
+window.zlbridge.call('test',{key:"value"},(arg) => {
 
 });
 ```
@@ -83,13 +83,13 @@ bridge.callHandler("jsMethod",args: ["原生信息"],completionHandler:(obj,erro
 
 #### js注册jsMethod事件
 ```JavaScript
-window.ZLBridge.register("jsMethod",(arg) => {
+window.zlbridge.register("jsMethod",(arg) => {
      return arg;
 });
  ```
  或者
  ```JavaScript
-window.ZLBridge.registerWithCallback("jsMethod",(arg,callback) => {
+window.zlbridge.registerWithCallback("jsMethod",(arg,callback) => {
   //ture代表原生只能监听一次回调结果，false可以连续监听，默认传为true
   callback(arg,true);
 });
