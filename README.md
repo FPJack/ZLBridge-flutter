@@ -2,10 +2,10 @@
 ## demo
 下载包到本地，可选择android或者ios模拟器运行查看效果图
 ## 说明
-ZLBridge-flutter是为原生(android,ios)webview与JS提供数据交互更简单方便的一个小插件工具，其数据交互的原理iOS是基于[userContentController addScriptMessageHandler:bridge name:@"ZLBridge"]实现的，android是基于webView.addJavascriptInterface接口实现的。ZLBridge-flutter并不提供webview页面展示，只负责处理原生与js数据交互，可配合webview_flutter，flutter_webview_plugin等等三方库使用。具体个端实现原理可查看对应平台的源码
-[ZLBridge-iOS](https://github.com/FPJack/ZLBridge-iOS)
-[ZLBridge-Android](https://github.com/FPJack/ZLBridge-Android)
-[ZLBridge-JS](https://github.com/FPJack/ZLBridge-JS)
+ZLBridge-flutter是为原生(android,ios)webview与JS提供数据交互更简单方便的一个小插件工具，其数据交互的原理iOS是基于[userContentController addScriptMessageHandler:bridge name:@"ZLBridge"]实现的，android是基于webView.addJavascriptInterface接口实现的。ZLBridge-flutter并不提供webview页面展示，只负责处理原生与js数据交互，可配合webview_flutter，flutter_webview_plugin等等三方库使用。具体各端实现原理可查看对应平台的源码
+[ZLBridge-iOS](https://github.com/FPJack/ZLBridge-iOS),
+[ZLBridge-Android](https://github.com/FPJack/ZLBridge-Android),
+[ZLBridge-JS](https://github.com/FPJack/ZLBridge-JS).
 
 ## 安装
 ```ruby
@@ -24,7 +24,7 @@ ZLBridge bridge = ZLBridge(evaluateJavascriptFunc:(String js){
 	 //flutter_webview_plugin:flutterWebViewPlugin.evalJavascript(js);
 	 //webview_flutter:webVC.evaluateJavascript(js);
      return webVC.evaluateJavascript(js);
-    });
+});
 
 ```
 ## JavascriptChannel
@@ -34,7 +34,7 @@ JavascriptChannel(
         name: ZLBridge.channelName,
         onMessageReceived: (JavascriptMessage message) {
           bridge.handleJSMessage(message.message);
-        });
+});
 ```
 
 # ZLBridge初始化(可选本地原生注入，也可以由H5远程注入)
@@ -44,7 +44,8 @@ JavascriptChannel(
 ```
 或者H5初始化ZLBridge
 ```JavaScript
- var ZLBridge = require('zlbridge-js')
+//初始化完成后也可通过window.zlbridge拿zlbridge对象
+ var zlbridge = require('zlbridge-js')
 ```
 
 # 原生与JS交互
@@ -55,19 +56,19 @@ JavascriptChannel(
 ```JavaScript
 window.ZLBridge.call('test',(arg) => {
 
-	});
+});
 ```
 ### 有参数参数
 ```JavaScript
 window.ZLBridge.call('test',{key:"value"},(arg) => {
 
-	});
+});
 ```
 ### 原生注册test事件
 ```Java
 bridge.registHandler("test", (obj, callback){
       callback(obj,true);
-    });
+});
 ```
 
 ## 原生调用js
@@ -76,7 +77,7 @@ bridge.registHandler("test", (obj, callback){
 ```Dart
 bridge.callHandler("jsMethodWithCallback",args: ["原生信息"],completionHandler:(obj,error){
                 
-	});
+});
 ```
 
 ### js注册jsMethod事件
