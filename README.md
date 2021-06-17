@@ -99,7 +99,7 @@ window.zlbridge.registerWithCallback("jsMethod",(arg,callback) => {
 ## 通过本地注入JS脚本的，H5可以监听zlbridge初始化完成事件
 ```JavaScript
 document.addEventListener('ZLBridgeInitReady', function() {
-    consloe.log('ZLBridge初始化完成');
+    console.log('ZLBridge初始化完成');
 },false);
   ```
 ## ！！！！ flutter传给JS的值必须是可以json.encode转换的Object
