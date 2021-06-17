@@ -67,6 +67,7 @@ window.ZLBridge.call('test',{key:"value"},(arg) => {
 ### 原生注册test事件
 ```Java
 bridge.registHandler("test", (obj, callback){
+	  //true：jS调用一次test事件只能接受原生一次传值，false：JS一次事件可接受多次传值
       callback(obj,true);
 });
 ```
