@@ -37,7 +37,7 @@ JavascriptChannel(
 });
 ```
 
-## ZLBridge初始化(可选本地原生注入，也可以由H5远程注入)
+## h5端zlbridge初始化(可选本地原生注入初始化，也可以由H5远程导入初始化)
 原生初始化ZLBridge
 ```Dart
     bridge.injectLocalJS();
