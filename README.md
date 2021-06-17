@@ -40,7 +40,7 @@ JavascriptChannel(
 ## h5端zlbridge初始化(可选本地原生注入初始化，也可以由H5远程导入初始化)
 原生初始化ZLBridge
 ```Dart
-    bridge.injectLocalJS();
+  bridge.injectLocalJS();
 ```
 或者H5初始化ZLBridge
 ```JavaScript
@@ -95,7 +95,7 @@ window.ZLBridge.registerWithCallback("jsMethod",(arg,callback) => {
 });
   ```
 
-## 通过本地注入JS脚本的，H5可以监听ZLBridge初始化完成
+## 通过本地注入JS脚本的，H5可以监听zlbridge初始化完成事件
 ```JavaScript
 document.addEventListener('ZLBridgeInitReady', function() {
     consloe.log('ZLBridge初始化完成');
