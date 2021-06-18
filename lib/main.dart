@@ -104,7 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
     webVC.loadUrl(Uri.dataFromString(fileHtmlContents,
         mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());
-
   }
   @override
   Widget build(BuildContext context) {

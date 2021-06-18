@@ -94,7 +94,13 @@ class ZLBridge<T> {
     }
     String jsonResult = json.encode(map);
     String js = "window.zlbridge._nativeCall('$methodName','$jsonResult')";
-    evaluateJavascriptFunc(js);
+    evaluateJavascriptFunc(js).then((value){
+    }).catchError((onError){
+      if (completionHandler != null) {
+        completionHandler(null,onError.toString());
+        _callHanders.remove(ID);
+      }
+    });
   }
   void destroyBridge(){
     _registHanders.clear();
