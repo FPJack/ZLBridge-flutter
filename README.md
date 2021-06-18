@@ -46,7 +46,7 @@ JavascriptChannel(
 或者H5
 ```JavaScript
 //初始化完成后也可通过window.zlbridge拿zlbridge对象,详细请查看ZLBridge-JS
- var zlbridge = require('zlbridge-js')
+ var zlbridge = require('zlbridge')
 ```
 
 ## 原生与JS交互
