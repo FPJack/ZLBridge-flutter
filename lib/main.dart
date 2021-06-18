@@ -89,7 +89,11 @@ class _MyHomePageState extends State<MyHomePage> {
           onWebViewCreated:(webVC){
             this.webVC = webVC;
             _loadLocalHtmlAndInjectJS();
-          }
+          },
+        onPageFinished: (url){
+          //注入框架js
+          bridge.injectLocalJS();
+        },
       ),
     );
   }
@@ -100,8 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
     webVC.loadUrl(Uri.dataFromString(fileHtmlContents,
         mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());
-    //注入框架js
-    bridge.injectLocalJS();
+
   }
   @override
   Widget build(BuildContext context) {
