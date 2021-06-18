@@ -5,7 +5,7 @@
 ZLBridge-flutter是为原生(android,ios)webview与JS提供数据交互更简单方便的一个小插件工具，其数据交互的原理iOS是基于[userContentController addScriptMessageHandler]以及android是基于webView.addJavascriptInterface接口执行js代码为window初始化一个zlbridge对象，后续数据交互都是通过window.zlbridge对象来共享。ZLBridge-flutter并不提供webview页面展示，只负责处理原生与js数据交互，可配合webview_flutter，flutter_webview_plugin等等三方库使用。具体各端实现原理可查看对应平台的源码
 [ZLBridge-iOS](https://github.com/FPJack/ZLBridge-iOS),
 [ZLBridge-Android](https://github.com/FPJack/ZLBridge-Android),
-[ZLBridge-JS](https://github.com/FPJack/ZLBridge-JS).
+[ZLBridge-JS](https://github.com/FPJack/ZLBridge-JS).后续可能会添加对ZLBridge-RN的支持
 
 ## 安装
 ```ruby
