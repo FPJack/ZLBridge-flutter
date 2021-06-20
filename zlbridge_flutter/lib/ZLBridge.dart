@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 typedef JSCompletionHandler = void Function(Object obj,String error) ;
-typedef JSCallbackHandler = void Function(Object obj,bool end) ;
+typedef JSCallbackHandler = void Function(Object obj,{bool end}) ;
 typedef JSRegistHandler = void Function(Object obj,JSCallbackHandler callback) ;
 typedef JSRegistUndefinedHandler = void Function(String name,Object obj,JSCallbackHandler callback);
 class ZLBridge<T> {
@@ -36,7 +36,7 @@ class ZLBridge<T> {
       return;
     }
     JSRegistHandler registHandler = _registHanders[name];
-    JSCallbackHandler callback = (Object result,bool end){
+    JSCallbackHandler callback = (Object result,{bool end = true}){
       Map map = Map();
       map["end"] = end?1:0;
       map["result"] = result;
