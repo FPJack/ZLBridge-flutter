@@ -29,7 +29,7 @@ dependencies:
     git:
       url: https://github.com/FPJack/ZLBridge-flutter
       path: zlbridge_flutter
-#      ref: 1.0.0
+      ref: 1.0.0
 
   #  zlbridge_flutter:
 #    path: ../flutter_zlbridge/zlbridge_flutter
