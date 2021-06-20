@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     //定义test事件
     bridge.registHandler("test", (obj, callback) {
-      callback(obj,true);
+      callback(obj);
     });
     //未定义的事件名都会走这
     bridge.registUndefinedHandler((name, obj, callback) {
@@ -60,8 +60,12 @@ class _MyHomePageState extends State<MyHomePage> {
       int time = 0;
       timer = Timer.periodic(Duration(seconds: 1), (timer) {
         time += 10;
-        callback("$time%",time == 100 ? true : false);
-        if(time == 100) timer.cancel();
+        if(time == 100){
+          timer.cancel();
+          callback("$time%");
+        }else{
+          callback("$time%",end:false);
+        }
       });
     });
     this.bridge = bridge;
@@ -92,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         onPageFinished: (url){
           //注入框架js
-          // bridge.injectLocalJS();
+          bridge.injectLocalJS();
         },
       ),
     );

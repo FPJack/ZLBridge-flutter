@@ -11,7 +11,7 @@ class ZLBridge<T> {
   Map<String,JSRegistHandler> _registHanders;
   Map<String,JSCompletionHandler> _callHanders;
   JSRegistUndefinedHandler _undefinedHandler;
-  bool _initLocalJS;
+  bool _initLocalJS = false;
   Future<String> Function(String js) evaluateJavascriptFunc;
   ZLBridge({@required Future<String> Function(String js) evaluateJavascriptFunc}){
     this.evaluateJavascriptFunc = evaluateJavascriptFunc;
@@ -63,7 +63,7 @@ class ZLBridge<T> {
     });
   }
 
-    void registHandler(String methodName,JSRegistHandler registHandler){
+  void registHandler(String methodName,JSRegistHandler registHandler){
     if(methodName == null || methodName.length == 0) return;
     _registHanders[methodName] = registHandler;
   }
