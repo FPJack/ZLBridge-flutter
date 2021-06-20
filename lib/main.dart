@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         onPageFinished: (url){
           //注入框架js
-          bridge.injectLocalJS();
+          // bridge.injectLocalJS();
         },
       ),
     );

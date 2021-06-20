@@ -167,8 +167,8 @@ packages:
     dependency: "direct main"
     description:
       path: zlbridge_flutter
-      ref: HEAD
-      resolved-ref: "488e9630391ef5375412dd87a782ca05685473ef"
+      ref: "1.0.0"
+      resolved-ref: b01e04c0a7b8944d2c52c49512daee178dace8fe
       url: "https://github.com/FPJack/ZLBridge-flutter"
     source: git
     version: "0.0.1"

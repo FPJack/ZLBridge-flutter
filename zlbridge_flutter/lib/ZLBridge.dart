@@ -11,6 +11,7 @@ class ZLBridge<T> {
   Map<String,JSRegistHandler> _registHanders;
   Map<String,JSCompletionHandler> _callHanders;
   JSRegistUndefinedHandler _undefinedHandler;
+  bool _initLocalJS;
   Future<String> Function(String js) evaluateJavascriptFunc;
   ZLBridge({@required Future<String> Function(String js) evaluateJavascriptFunc}){
     this.evaluateJavascriptFunc = evaluateJavascriptFunc;
@@ -47,11 +48,18 @@ class ZLBridge<T> {
   }
 
   void injectLocalJS({void Function(Object error) callback})  {
+    if(_initLocalJS) return callback(null);
     rootBundle.loadString('packages/zlbridge_flutter/assets/zlbridge.js').then((value){
-      evaluateJavascriptFunc(value);
-      if(callback != null) callback(null);
+      evaluateJavascriptFunc(value).then((value){
+        _initLocalJS = true;
+        if(callback != null) callback(null);
+      }).catchError((onError){
+        _initLocalJS = false;
+        if(callback != null) callback(onError);
+      });
     }).catchError((onError){
       if(callback != null) callback(onError);
+      _initLocalJS = false;
     });
   }
 
@@ -81,7 +89,10 @@ class ZLBridge<T> {
     });
   }
   void callHandler(String methodName,{List args,JSCompletionHandler completionHandler}){
-    if (evaluateJavascriptFunc == null) return;
+    if (evaluateJavascriptFunc == null){
+      if(completionHandler != null) completionHandler(null,"方法名不能为空");
+      return;
+    }
     args = args == null ? [] : args;
     Map map = Map();
     map["result"] = args;
