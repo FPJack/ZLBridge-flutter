@@ -6,7 +6,7 @@ typedef JSCompletionHandler = void Function(Object obj,String error) ;
 typedef JSCallbackHandler = void Function(Object obj,{bool end}) ;
 typedef JSRegistHandler = void Function(Object obj,JSCallbackHandler callback) ;
 typedef JSRegistUndefinedHandler = void Function(String name,Object obj,JSCallbackHandler callback);
-class ZLBridge<T> {
+class ZLBridge {
   static final String channelName = "ZLBridge";
   Map<String,JSRegistHandler> _registHanders;
   Map<String,JSCompletionHandler> _callHanders;
@@ -44,7 +44,14 @@ class ZLBridge<T> {
       String js = "window.zlbridge._nativeCallback('$jsMethodId','$jsonResult');";
       evaluateJavascriptFunc(js);
     };
-    registHandler != null ? registHandler(body,callback) : _undefinedHandler(name,body,callback);
+    if (registHandler != null){
+      registHandler(body,callback);
+      return;
+    }
+    if (_undefinedHandler != null){
+      _undefinedHandler(name,body,callback);
+      return;
+    }
   }
 
   void injectLocalJS({void Function(Object error) callback})  {
