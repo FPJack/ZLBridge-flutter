@@ -34,7 +34,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  ZLBridge bridge;
+  ZLBridge bridge = ZLBridge();
   WebViewController webVC;
   String jsEvent1Title = "调用js事件1";
   String jsEvent2Title = "调用js事件2";
@@ -43,9 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    ZLBridge bridge = ZLBridge(evaluateJavascriptFunc:(String js){
-     return webVC.evaluateJavascript(js);
-    });
+    bridge.evaluateJavascriptAction((js) => webVC.evaluateJavascript(js));
     //定义test事件
     bridge.registHandler("test", (obj, callback) {
       callback(obj);
@@ -96,7 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         onPageFinished: (url){
           //注入框架js
-          bridge.injectLocalJS();
+          bridge.injectLocalJS(callback: (error){
+            print(error);
+          });
         },
       ),
     );

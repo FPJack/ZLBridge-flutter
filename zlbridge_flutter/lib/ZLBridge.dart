@@ -1,25 +1,24 @@
-import 'dart:collection';
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 typedef JSCompletionHandler = void Function(Object obj,String error) ;
 typedef JSCallbackHandler = void Function(Object obj,{bool end}) ;
 typedef JSRegistHandler = void Function(Object obj,JSCallbackHandler callback) ;
 typedef JSRegistUndefinedHandler = void Function(String name,Object obj,JSCallbackHandler callback);
-class ZLBridge {
+class ZLBridge<T> {
   static final String channelName = "ZLBridge";
   Map<String,JSRegistHandler> _registHanders;
   Map<String,JSCompletionHandler> _callHanders;
   JSRegistUndefinedHandler _undefinedHandler;
-  bool _initLocalJS = false;
-  Future<String> Function(String js) evaluateJavascriptFunc;
-  ZLBridge({@required Future<String> Function(String js) evaluateJavascriptFunc}){
-    this.evaluateJavascriptFunc = evaluateJavascriptFunc;
+  Future<String> Function(String js) _evaluateJavascriptFunc;
+  ZLBridge(){
     _registHanders = Map();
     _callHanders = Map();
   }
+  void evaluateJavascriptAction(Future<String> Function(String js) evaluateJavascriptFunc){
+    this._evaluateJavascriptFunc = evaluateJavascriptFunc;
+  }
   void handleJSMessage(String message) {
-    if (evaluateJavascriptFunc == null) return;
+    if (_evaluateJavascriptFunc == null) return;
     _ZLMsgBody msgBody = _ZLMsgBody.initWithMap(message);
     String name = msgBody.name;
     String callID = msgBody.callID;
@@ -42,31 +41,20 @@ class ZLBridge {
       map["result"] = result;
       String jsonResult = json.encode(map);
       String js = "window.zlbridge._nativeCallback('$jsMethodId','$jsonResult');";
-      evaluateJavascriptFunc(js);
+      _evaluateJavascriptFunc(js);
     };
-    if (registHandler != null){
-      registHandler(body,callback);
-      return;
-    }
-    if (_undefinedHandler != null){
-      _undefinedHandler(name,body,callback);
-      return;
-    }
+    registHandler != null ? registHandler(body,callback) : _undefinedHandler(name,body,callback);
   }
 
   void injectLocalJS({void Function(Object error) callback})  {
-    if(_initLocalJS) return callback(null);
     rootBundle.loadString('packages/zlbridge_flutter/assets/zlbridge.js').then((value){
-      evaluateJavascriptFunc(value).then((value){
-        _initLocalJS = true;
+      _evaluateJavascriptFunc(value).then((value){
         if(callback != null) callback(null);
       }).catchError((onError){
-        _initLocalJS = false;
         if(callback != null) callback(onError);
       });
     }).catchError((onError){
       if(callback != null) callback(onError);
-      _initLocalJS = false;
     });
   }
 
@@ -84,11 +72,11 @@ class ZLBridge {
     _registHanders.clear();
   }
   void hasNativeMethod(String name,void Function(bool exit) callback){
-    if (evaluateJavascriptFunc == null) return;
+    if (_evaluateJavascriptFunc == null) return;
     if (callback == null) return;
     if(name == null || name.length == 0) callback(false);
     String js = "window.zlbridge._hasNativeMethod('$name');";
-    evaluateJavascriptFunc(js).then((value){
+    _evaluateJavascriptFunc(js).then((value){
       String v = "$value";
       callback(v == "1");
     }).catchError((onError){
@@ -96,7 +84,7 @@ class ZLBridge {
     });
   }
   void callHandler(String methodName,{List args,JSCompletionHandler completionHandler}){
-    if (evaluateJavascriptFunc == null){
+    if (_evaluateJavascriptFunc == null){
       if(completionHandler != null) completionHandler(null,"方法名不能为空");
       return;
     }
@@ -112,7 +100,7 @@ class ZLBridge {
     }
     String jsonResult = json.encode(map);
     String js = "window.zlbridge._nativeCall('$methodName','$jsonResult')";
-    evaluateJavascriptFunc(js).then((value){
+    _evaluateJavascriptFunc(js).then((value){
     }).catchError((onError){
       if (completionHandler != null) {
         completionHandler(null,onError.toString());

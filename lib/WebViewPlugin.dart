@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,9 +39,8 @@ class _WebViewPluginState extends State<WebViewPlugin> {
         this.bridge.injectLocalJS();
       }
     });
-    ZLBridge bridge = ZLBridge(evaluateJavascriptFunc:(String js){
-      return flutterWebViewPlugin.evalJavascript(js);
-    });
+    ZLBridge bridge = ZLBridge();
+    bridge.evaluateJavascriptAction((js) => flutterWebViewPlugin.evalJavascript(js));
     //定义test事件
     bridge.registHandler("test", (obj, callback) {
       callback(obj,end:true);

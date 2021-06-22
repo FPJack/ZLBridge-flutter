@@ -22,13 +22,11 @@ dependencies:
 
 ### bridge
 ```Dart
-ZLBridge bridge = ZLBridge(evaluateJavascriptFunc:(String js){
-	 //调用对应三方库执行原生js的API接口， 
-	 //flutter_webview_plugin:flutterWebViewPlugin.evalJavascript(js);
-	 //webview_flutter:webVC.evaluateJavascript(js);
-     return webVC.evaluateJavascript(js);
-});
-
+ ZLBridge bridge = ZLBridge();
+ //调用对应三方库执行原生js的API接口，
+ //flutter_webview_plugin:flutterWebViewPlugin.evalJavascript(js);
+ //webview_flutter:webVC.evaluateJavascript(js);
+ bridge.evaluateJavascriptAction((js) => webVC.evaluateJavascript(js));
 ```
 ### JavascriptChannel
 ```Dart
