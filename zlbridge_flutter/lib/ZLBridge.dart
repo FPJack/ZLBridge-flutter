@@ -85,7 +85,7 @@ class ZLBridge<T> {
   }
   void callHandler(String methodName,{List args,JSCompletionHandler completionHandler}){
     if (_evaluateJavascriptFunc == null){
-      if(completionHandler != null) completionHandler(null,"方法名不能为空");
+      if(completionHandler != null) completionHandler(null,"请实现evaluateJavascriptAction");
       return;
     }
     args = args == null ? [] : args;
