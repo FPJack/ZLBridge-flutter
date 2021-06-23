@@ -4,7 +4,7 @@ typedef JSCompletionHandler = void Function(Object obj,String error) ;
 typedef JSCallbackHandler = void Function(Object obj,{bool end}) ;
 typedef JSRegistHandler = void Function(Object obj,JSCallbackHandler callback) ;
 typedef JSRegistUndefinedHandler = void Function(String name,Object obj,JSCallbackHandler callback);
-class ZLBridge<T> {
+class ZLBridge {
   static final String channelName = "ZLBridge";
   Map<String,JSRegistHandler> _registHanders;
   Map<String,JSCompletionHandler> _callHanders;

@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_zlbridge/webview_flutter_bridge.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'WebViewPlugin.dart';
 import 'package:zlbridge_flutter/ZLBridge.dart';
 void main() {
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -23,19 +23,15 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  ZLBridge bridge = ZLBridge();
-  WebViewController webVC;
+  webview_flutter_bridge bridge;
   String jsEvent1Title = "调用js事件1";
   String jsEvent2Title = "调用js事件2";
   Timer timer;
@@ -43,7 +39,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    bridge.evaluateJavascriptAction((js) => webVC.evaluateJavascript(js));
+    bridge = webview_flutter_bridge(
+      injectBridgeJS: true,
+      initialUrl: "",
+      javascriptMode: JavascriptMode.unrestricted,
+      onWebViewCreated: (webVC){
+        rootBundle.loadString('assets/files/index.html').then((value){
+          webVC.loadUrl(Uri.dataFromString(value, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
+        });
+      }
+    );
     //定义test事件
     bridge.registHandler("test", (obj, callback) {
       callback(obj);
@@ -66,60 +71,21 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       });
     });
-    this.bridge = bridge;
-  }
-  JavascriptChannel _toasterJavascriptChannel(BuildContext context) {
-    return JavascriptChannel(
-        name: ZLBridge.channelName,
-        onMessageReceived: (JavascriptMessage message) {
-          bridge.handleJSMessage(message.message);
-          // ignore: deprecated_member_use
-          Scaffold.of(context).showSnackBar(
-            SnackBar(content: Text(message.message)),
-          );
-        });
-  }
-  Widget webview(BuildContext context){
-    return Container(
-      height: 300,
-      child: WebView(
-          initialUrl: "",
-          javascriptMode: JavascriptMode.unrestricted,
-          javascriptChannels: <JavascriptChannel>{
-            _toasterJavascriptChannel(context),
-          },
-          onWebViewCreated:(webVC){
-            this.webVC = webVC;
-            _loadLocalHtmlAndInjectJS();
-          },
-        onPageFinished: (url){
-          //注入框架js
-          bridge.injectLocalJS(callback: (error){
-            print(error);
-          });
-        },
-      ),
-    );
-  }
-  _loadLocalHtmlAndInjectJS() async {
-    //加载本地html
-    String filePath = 'assets/files/index.html';
-    String fileHtmlContents = await rootBundle.loadString(filePath);
-    webVC.loadUrl(Uri.dataFromString(fileHtmlContents,
-        mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('webview_flutter'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            webview(context),
+            Container(
+              height: 300,
+              child: this.bridge.webView,
+            ),
             RaisedButton(child: Text(jsEvent1Title),onPressed: (){
               bridge.callHandler("jsMethod",completionHandler:(obj,error){
                 this.setState(() {
@@ -139,7 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 return WebViewPlugin();
               }));
             },),
-
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
