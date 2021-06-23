@@ -52,6 +52,6 @@ class _WebViewPluginState extends State<WebViewPlugin> {
   @override
   Widget build(BuildContext context) {
     this.bridge = initBridge();
-    return this.bridge.webviewScaffold;
+    return this.bridge.buildWebviewScaffold();
   }
 }

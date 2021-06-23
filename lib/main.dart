@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               height: 300,
-              child: this.bridge.webView,
+              child: this.bridge.buildWebView(),
             ),
             RaisedButton(child: Text(jsEvent1Title),onPressed: (){
               bridge.callHandler("jsMethod",completionHandler:(obj,error){
